@@ -33,15 +33,14 @@ const htmlPlugins = () => {
         template: item,
         filename: filenameTmp + '.html',
         inject: 'body',
-        chunks: ['vendor', 'manifest', 'app'],
         chunksSortMode: 'dependency',
-          minify: {
-              removeComments: process.env.NODE_ENV === 'production' ? config.build.htmlMinify : config.dev.htmlMinify,
-              collapseWhitespace: process.env.NODE_ENV === 'production' ? config.build.htmlMinify : config.dev.htmlMinify,
-              removeAttributeQuotes: process.env.NODE_ENV === 'production' ? config.build.htmlMinify : config.dev.htmlMinify,
-              // more options:
-              // https://github.com/kangax/html-minifier#options-quick-reference
-          }
+        minify: {
+            removeComments: process.env.NODE_ENV === 'production' ? config.build.htmlMinify : config.dev.htmlMinify,
+            collapseWhitespace: process.env.NODE_ENV === 'production' ? config.build.htmlMinify : config.dev.htmlMinify,
+            removeAttributeQuotes: process.env.NODE_ENV === 'production' ? config.build.htmlMinify : config.dev.htmlMinify,
+            // more options:
+            // https://github.com/kangax/html-minifier#options-quick-reference
+        }
       }
       pluginArr.push(new HtmlWebpackPlugin(conf))
   })
