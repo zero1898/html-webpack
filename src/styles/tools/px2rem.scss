@@ -1,0 +1,40 @@
+// basic fontsize for px2rem
+$base-font-size: 16px !default;
+$rem-not-support-for-ie: false !default;
+$base-font-size: 75px;
+// 去除一个值的单位
+@function strip-units($number) {
+    @return $number / ($number * 0 + 1);
+}
+
+// px转rem mixin
+@mixin px2rem($property, $px-values) {
+    $base-font-size: strip-units($base-font-size);
+    $pxs: "";
+    $rems: "";
+    @each $px-value in $px-values {
+        @if $px-value==0 or type-of($px-value) !="number" {
+            $pxs: #{$pxs + " " + $px-value};
+            $rems: #{$rems + " " + $px-value};
+        }
+        @else {
+            $px-value: strip-units($px-value);
+            $pxs: #{$pxs + " " + $px-value}px;
+            $rems: #{$rems + " " + $px-value / $base-font-size}rem;
+        }
+    }
+    @if $rem-not-support-for-ie {
+        #{$property}: $pxs;
+    }
+    #{$property}: $rems;
+}
+
+// px转rem function
+@function px2rem($px-value) {
+    $px-value: strip-units($px-value);
+    $base-font-size: strip-units($base-font-size);
+    @if ($px-value==0) {
+        @return $px-value;
+    }
+    @return #{$px-value / $base-font-size}rem;
+}

@@ -20,31 +20,21 @@ const createLintingRule = () => ({
   }
 })
 
-// 入口文件
-const entries = () => {
-  const entryPath = resolve('src/scripts')
-  const entryFiles = glob.sync(entryPath + '/**/*.{js,jsx,ts}')
-  const entryMaps = {}
-
-  entryFiles.forEach(function (item) {
-      entryMaps[item.substring(item.lastIndexOf('\/') + 1, item.lastIndexOf('.'))] = item
-  })
-  return entryMaps
-}
-
 // html_webpack_plugins
 // see https://github.com/ampedandwired/html-webpack-plugin
 const htmlPlugins = () => {
   const templatePath = resolve('src/views')
   const templateFiles = glob.sync(templatePath + '/**/*.{html,htm}')
   const pluginArr = []
-  const entryMaps = entries()
 
   templateFiles.forEach(function (item) {
       let filenameTmp = item.substring(item.lastIndexOf('\/') + 1, item.lastIndexOf('.'))
       let conf = {
-          template: item,
-          filename: filenameTmp + '.html',
+        template: item,
+        filename: filenameTmp + '.html',
+        inject: 'body',
+        chunks: ['vendor', 'manifest', 'app'],
+        chunksSortMode: 'dependency',
           minify: {
               removeComments: process.env.NODE_ENV === 'production' ? config.build.htmlMinify : config.dev.htmlMinify,
               collapseWhitespace: process.env.NODE_ENV === 'production' ? config.build.htmlMinify : config.dev.htmlMinify,
@@ -53,12 +43,6 @@ const htmlPlugins = () => {
               // https://github.com/kangax/html-minifier#options-quick-reference
           }
       }
-      if (filenameTmp in entryMaps) {
-          conf.inject = 'body',
-          conf.chunks = ['vendor', 'manifest', filenameTmp]
-          // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-          conf.chunksSortMode = 'dependency'
-      }
       pluginArr.push(new HtmlWebpackPlugin(conf))
   })
   return pluginArr
@@ -66,7 +50,9 @@ const htmlPlugins = () => {
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  entry: Object.assign(entries()),
+  entry: {
+    app: process.env.NODE_ENV === 'production' ? ["babel-polyfill", "./src/main.js"] : './src/main.js'
+  },
   output: {
     path: config.build.assetsRoot,
     filename: 'js/[name].js',
@@ -77,7 +63,6 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
       '~src': resolve('src'),
       '~views': resolve('src/views'),
       '~styles': resolve('src/styles'),

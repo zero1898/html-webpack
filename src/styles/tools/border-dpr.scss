@@ -1,0 +1,12 @@
+// border 1px
+@mixin border-dpr($width, $border-style, $color) {
+    border-width: $width;
+    border-style: $border-style;
+    border-color: $color;
+    [data-dpr="2"] & {
+        border-width: $width * 2;
+    }
+    [data-dpr="3"] & {
+        border-width: $width * 3;
+    }
+}
