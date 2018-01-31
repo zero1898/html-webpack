@@ -50,7 +50,7 @@ const htmlPlugins = () => {
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: process.env.NODE_ENV === 'production' ? ["babel-polyfill", "./src/main.js"] : './src/main.js'
+    app: ["babel-polyfill", "./src/main.js"]
   },
   output: {
     path: config.build.assetsRoot,
