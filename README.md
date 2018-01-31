@@ -23,4 +23,4 @@ npm run build --report
 - 将你的 html/htm 等页面文件放在 src/views目录下
 - 将你的 sass/scss/css 等样式文件放在 src/styles 目录下
 - 将你的 js 等脚本文件放在 src/scripts 目录下
-- 将你的 jpeg/jpg/png/gif 等图片文件放在 src/images 目录下
+- 将你的 图片/视频 等资源文件放在 static 目录下

@@ -65,8 +65,7 @@ module.exports = {
       '~src': resolve('src'),
       '~views': resolve('src/views'),
       '~styles': resolve('src/styles'),
-      '~scripts': resolve('src/scripts'),
-      '~images': resolve('src/images'),
+      '~scripts': resolve('src/scripts')
     }
   },
   module: {
